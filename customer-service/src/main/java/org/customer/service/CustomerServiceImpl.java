@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.customer.common.CustomerResponseCodes;
 import org.customer.dto.CustomerRequest;
 import org.customer.dto.CustomerResponse;
 import org.customer.dto.DiscountRequest;
@@ -32,8 +33,8 @@ public class CustomerServiceImpl implements CustomerService {
 	public CustomerResponse addCustomerDetails(CustomerRequest customerRequest) {
 
 		if (customerRepo.existsByEmail_id(customerRequest.getEmailID())) {
-			customerResponse.setStatus("Error");
-			customerResponse.setMessage("Email is already exist! Please enter valid emailID");
+			customerResponse.setStatus(CustomerResponseCodes.FAILED_CUSTOMER_ADD_EXISTS.getStatus());
+			customerResponse.setMessage(CustomerResponseCodes.FAILED_CUSTOMER_ADD_EXISTS.getMessage());
 			customerResponse.setCustomerCode(0000);
 		} else {
 
@@ -54,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 				e.printStackTrace();
 			}
 
-			customerResponse.setStatus("Success");
-			customerResponse.setMessage("Customer added successfully!!");
+			customerResponse.setStatus(CustomerResponseCodes.SUCCESS_CUSTOMER_ADD.getStatus());
+			customerResponse.setMessage(CustomerResponseCodes.SUCCESS_CUSTOMER_ADD.getMessage());
 			customerResponse.setCustomerCode(customerTable.getCustomer_code());
 
 		}
@@ -66,8 +67,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Optional<Customer> customerTable = customerRepo.findById(id);
 		if (customerTable.isEmpty()) {
-			customerResponse.setStatus("Fail");
-			customerResponse.setMessage("Customer not present");
+			customerResponse.setStatus(CustomerResponseCodes.FAILED_GET_CUSTOMER.getStatus());
+			customerResponse.setMessage(CustomerResponseCodes.FAILED_GET_CUSTOMER.getMessage());
 			customerResponse.setCustomerCode(0000);
 		} else {
 			Customer customer = Customer.getInstance().setFirst_name(customerRequest.getFirstName())
@@ -91,14 +92,14 @@ public class CustomerServiceImpl implements CustomerService {
 
 		List<Customer> customerTable = customerRepo.findByMobile(mobile_number);
 		if (customerTable.isEmpty()) {
-			customerResponse.setStatus("Fail");
-			customerResponse.setMessage("Customer not found !!");
+			customerResponse.setStatus(CustomerResponseCodes.FAILED_GET_CUSTOMER.getStatus());
+			customerResponse.setMessage(CustomerResponseCodes.FAILED_GET_CUSTOMER.getMessage());
 			customerResponse.setCustomerCode(0000);
 		} else {
 			Customer receivedData = customerTable.get(0);
 
-			searchCustomerResponse.setStatus("Success");
-			searchCustomerResponse.setMessage("Customer ddetails are as follows :");
+			searchCustomerResponse.setStatus(CustomerResponseCodes.SUCCESS_CUSTOMER_FOUND.getStatus());
+			searchCustomerResponse.setMessage(CustomerResponseCodes.SUCCESS_CUSTOMER_FOUND.getMessage());
 			searchCustomerResponse.setCustomerCode(receivedData.getCustomer_code());
 			searchCustomerResponse.getCustomerData().setFirstName(receivedData.getFirst_name());
 			searchCustomerResponse.getCustomerData().setMiddleName(receivedData.getMiddle_name());

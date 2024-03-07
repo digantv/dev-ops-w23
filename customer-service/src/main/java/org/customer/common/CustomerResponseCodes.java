@@ -4,6 +4,7 @@ public enum CustomerResponseCodes {
 	
 	
 	SUCCESS_CUSTOMER_ADD("0000","Success", "Customer added successfully"),
+	SUCCESS_CUSTOMER_FOUND("0000","Success","Customer Found Successfully"),
 	FAILED_CUSTOMER_ADD_EXISTS("0001","Error", "Email is already exist! Please enter valid emailID"),
 	FAILED_UPDATE_CUSTOMER("0001","Fail", "Customer not present"), 
 	FAILED_GET_CUSTOMER("0001","Fail", "Customer not found");
